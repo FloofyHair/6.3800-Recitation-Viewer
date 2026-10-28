@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recitation Problems &amp; Answers</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Times New Roman", Times, serif;
+      color: #172033;
+      background: #fff;
+      font-synthesis: none;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+    }
+
+    button,
+    a,
+    select {
+      font: inherit;
+    }
+
+    .topbar {
+      border-bottom: 1px solid #e4e8ef;
+    }
+
+    .topbar-inner {
+      display: flex;
+      width: min(900px, 100%);
+      min-height: 3.75rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0 auto;
+      padding: 0.5rem 1rem;
+    }
+
+    .brand-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      padding: 1rem 1rem 60vh;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .controls button {
+      min-height: 2.1rem;
+      padding: 0.3rem 0.55rem;
+      border: 0;
+      color: #172033;
+      background: transparent;
+    }
+
+    .recitation-picker {
+      position: relative;
+    }
+
+    .controls button.recitation-trigger {
+      width: auto;
+      min-width: 5.4rem;
+      min-height: 2.1rem;
+      padding: 0.3rem 0.25rem;
+      color: #172033;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+
+    .controls button.recitation-trigger:focus-visible {
+      outline: none;
+    }
+
+    .recitation-menu {
+      position: absolute;
+      z-index: 2;
+      top: calc(100% + 0.2rem);
+      left: 50%;
+      min-width: 100%;
+      padding: 0.25rem;
+      border-radius: 0.45rem;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+
+    .recitation-menu[hidden] {
+      display: none;
+    }
+
+    .controls button.recitation-option {
+      display: block;
+      width: 100%;
+      min-height: 2rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 0.35rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .controls button.recitation-option:hover,
+    .controls button.recitation-option:focus-visible {
+      background: #e8e8e8;
+      outline: none;
+    }
+
+    .controls button {
+      padding-right: 0;
+      padding-left: 0;
+      width: 1.8rem;
+      cursor: pointer;
+    }
+
+    .controls button:disabled {
+      color: #a0a8b5;
+      cursor: not-allowed;
+    }
+
+    .controls button:focus-visible,
+    .solution-toggle:focus-visible {
+      outline: 2px solid #172033;
+      outline-offset: 2px;
+    }
+
+    a:focus-visible {
+      outline: 3px solid #80a9f5;
+      outline-offset: 2px;
+    }
+
+    .source-links {
+      display: flex;
+      gap: 0.8rem;
+      margin: 0;
+    }
+
+    .source-links a {
+      color: #69758a;
+      font-size: 0.78rem;
+      text-decoration: none;
+    }
+
+    .source-links a:hover {
+      text-decoration: underline;
+    }
+
+    #problem-list {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .problem-card {
+      min-width: 0;
+    }
+
+    .problem-heading {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid #d8deea;
+    }
+
+    .problem-heading h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+
+    .problem-context {
+      padding: 0.25rem 0 0.4rem;
+    }
+
+    .subproblem {
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+
+    .question {
+      min-width: 0;
+      padding-right: 1.65rem;
+    }
+
+    .part-context {
+      margin: 0;
+      padding: 0;
+    }
+
+    .page-crops {
+      padding: 0.1rem 0;
+    }
+
+    .page-crops figure {
+      margin: 0;
+      line-height: 0;
+    }
+
+    .page-crops figure + figure {
+      margin-top: 0.2rem;
+      padding-top: 0.2rem;
+    }
+
+    .pdf-crop {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    .solution-panel .pdf-crop {
+      visibility: hidden;
+    }
+
+    .solution-panel .pdf-crop[data-rendered="true"] {
+      visibility: visible;
+    }
+
+    .solution-toggle {
+      display: inline-flex;
+      width: 1.4rem;
+      height: 1.4rem;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0.1rem 0 0;
+      padding: 0;
+      border: 0;
+      color: #53627a;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .solution-panel {
+      height: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      transition: height 260ms ease;
+    }
+
+    .solution-inner {
+      display: flow-root;
+    }
+
+    .indicator {
+      display: inline-grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-top: 1.5px solid currentColor;
+      border-right: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 220ms ease;
+    }
+
+    .solution-toggle[aria-expanded="true"] .indicator {
+      transform: rotate(135deg);
+    }
+
+    @media (max-width: 520px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .controls {
+        gap: 0.25rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .indicator,
+      .solution-panel {
+        transition-duration: 0.01ms;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group">
+        <h1>6.3800 Recitations</h1>
+        <nav class="source-links" aria-label="Original recitation PDFs">
+          <a id="handout-link" href="rec01-handout.pdf" target="_blank" rel="noopener">Handout PDF ↗</a>
+          <a id="solutions-link" href="rec01.pdf" target="_blank" rel="noopener">Solutions PDF ↗</a>
+        </nav>
+      </div>
+      <nav class="controls" aria-label="Recitation navigation">
+        <button id="previous" type="button" aria-label="Previous recitation">←</button>
+        <div class="recitation-picker">
+          <button
+            id="recitation-trigger"
+            class="recitation-trigger"
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="recitation-options"
+          ></button>
+          <div
+            id="recitation-menu"
+            class="recitation-menu"
+            role="listbox"
+            aria-label="Recitations"
+            hidden
+          >
+            <div id="recitation-options"></div>
+          </div>
+        </div>
+        <button id="next" type="button" aria-label="Next recitation">→</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <p id="viewer-error" role="alert" hidden>
+      For PDF rendering, open <code>start-viewer.bat</code> instead of opening this page directly.
+    </p>
+    <section id="problem-list" aria-label="Recitation problems"></section>
+  </main>
+
+  <script src="problems.js"></script>
+  <script>
+    if (location.protocol === "file:") {
+      document.querySelector("#viewer-error").hidden = false;
+    }
+  </script>
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>
